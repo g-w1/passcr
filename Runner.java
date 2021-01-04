@@ -71,13 +71,13 @@ class Runner {
             case 'n':
             case '!': {
                 if (curChar != c) {
-                    int[] tmp = {charToNum(c), curNum};
+                    int[] tmp = {charToNum(curChar), curNum};
                     toReturn.add(tmp);
                     curNum = 1;
                     curChar = c;
                 } else {
-                    // System.out.println(c);
-                    // System.out.println(curNum);
+                    System.out.println(c);
+                    System.out.println(curNum);
                     curNum += 1;
                     curChar = c;
                 }
@@ -88,6 +88,10 @@ class Runner {
                 return Optional.empty();
             }
         }
+
+        int[] tmp = {charToNum(curChar), curNum};
+        toReturn.add(tmp);
+
         return Optional.of(toReturn);
     }
     // these are so i dont have to deal with tuples
