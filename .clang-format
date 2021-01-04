@@ -1,0 +1,7 @@
+IndentWidth: 4
+---
+Language: Java
+# Use 100 columns for Java.
+ColumnLimit: 200
+AccessModifierOffset: 0
+---
