@@ -31,15 +31,19 @@ class Runner {
     Runner(String[] args) { arguments = args; }
 
     void driver() throws FileNotFoundException, IOException {
+        String help =
+            "Could not parse the first argument into a password " +
+            "string\nNote: the only characters allowed are 'x', 'b', 'n'." +
+            "\nx for a letter, b for a special char (!@#$%) n for a " +
+            "number\nThe second argument is how many passwords to generate\n";
         if (arguments.length != 2) {
             System.out.println("Need 2 arguments");
+            System.out.println(help);
             return;
         }
         Optional<ArrayList<int[]>> optParsed = parse();
         if (!optParsed.isPresent()) {
-            System.out.println(
-                "Could not parse the first argument into a password " +
-                "string\nNote: the only characters allowed are 'x', 'b', 'n'.");
+            System.out.println(help);
             return;
         }
         int num = 0;
@@ -73,7 +77,7 @@ class Runner {
             break;
         case 'n':
             for (int i = 0; i < num; i++)
-                out += getRandom(10);
+                out += getRandom(9);
             break;
         case 'x':
             out += readLineFromFile(num);
