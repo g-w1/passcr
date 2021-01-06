@@ -21,6 +21,7 @@ public
 class Runner {
     String pattern;
     String[] arguments;
+    Bank bank;
   public
     static void main(String[] args) throws FileNotFoundException, IOException {
         Runner run = new Runner(args);
@@ -28,19 +29,25 @@ class Runner {
     }
 
   public
-    Runner(String[] args) { arguments = args; }
+    Runner(String[] args) {
+        arguments = args;
+        bank = new Bank();
+    }
 
     void driver() throws FileNotFoundException, IOException {
+
         String help =
             "Could not parse the first argument into a password " +
             "string\nNote: the only characters allowed are 'x', 'b', 'n'." +
             "\nx for a letter, b for a special char (!@#$%) n for a " +
-            "number\nThe second argument is how many passwords to generate\n";
-        if (arguments.length != 2) {
-            System.out.println("Need 2 arguments");
+            "number\nThe second argument is how many passwords to generate\n" +
+            "Third argument is dictionary file\n ";
+        if (arguments.length != 3) {
+            System.out.println("Need 3 arguments");
             System.out.println(help);
             return;
         }
+        bank.load(arguments[2]);
         Optional<ArrayList<int[]>> optParsed = parse();
         if (!optParsed.isPresent()) {
             System.out.println(help);
@@ -68,7 +75,7 @@ class Runner {
             System.out.println(password);
         }
     }
-    static String generate(char type, int num) throws IOException {
+    String generate(char type, int num) throws IOException {
         String out = new String();
         switch (type) {
         case 'b':
@@ -175,27 +182,12 @@ class Runner {
     // convenient random
     static int getRandom(int max) { return (int)(Math.random() * (max + 1)); }
 
-    static String readLineFromFile(int fNum) throws IOException {
-        String fName = String.format("shortened/%d.list", fNum + 1);
-        String specific_line = new String();
-
-        try {
-            Scanner lineScanner = new Scanner(new File(fName));
-            String nl = lineScanner.nextLine();
-            int num = getRandom(Integer.parseInt(nl));
-            int i = 0;
-            while (i < num - 3 && lineScanner.hasNextLine()) {
-                if (i == num)
-                    return lineScanner.nextLine();
-                lineScanner.nextLine();
-                i++;
-            }
-
-            return lineScanner.nextLine();
-        } catch (IOException e) {
+    String readLineFromFile(int fNum) throws IOException {
+        String got = bank.getWordOfLenth(fNum);
+        if (got == null) {
             System.out.println("Could not find word with length " + fNum);
             System.exit(1);
         }
-        return new String();
+        return got;
     }
 }

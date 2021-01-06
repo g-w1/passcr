@@ -1,15 +1,18 @@
-all: SetterUpper.java
-	javac SetterUpper.java
-	javac Runner.java
 
-setup: all
-	$(RM) -r shortened
-	mkdir shortened
-	java SetterUpper
+JFLAGS = -g
+JC = javac
+.SUFFIXES: .java .class
+.java.class:
+	$(JC) $(JFLAGS) $*.java
 
-run: setup
-	java Runner
+CLASSES = \
+	Bank.java \
+	Runner.java
+
+default: classes
+
+classes: $(CLASSES:.java=.class)
 
 clean:
 	$(RM) *.class
-	$(RM) -rf shortened
+
